@@ -6,8 +6,7 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
-  --animation-time: var(--transition-slow);
-  --rotation-time: 6s;
+  overflow: hidden;
 }
 
 .HomeContainer.frontend {
@@ -33,29 +32,44 @@
   color: var(--text-color);
   font-size: 4em;
   font-weight: 300;
+  margin: 0;
 }
 
 .HomeContainer .hero h1 span {
   font-weight: 500;
 }
+
 .HomeContainer .hero h2 {
   color: var(--text-color);
   font-size: 2em;
   font-weight: 400;
   text-align: center;
+  margin: 0;
 }
-.HomeContainer .hero h2 span {
+
+.hero .names {
   font-weight: 700;
   position: relative;
+  display: inline-flex;
+  gap: 0.35em;
 }
-.HomeContainer .hero h2 span.active::after {
-  content: "";
+
+.djangoWord,
+.reactWord {
+  position: relative;
+  display: inline-block;
+  color: var(--text-color);
+}
+
+.underline {
   position: absolute;
-  width: 100%;
   height: 4px;
-  bottom: -5px;
+  width: 100%;
+  left: 0;
+  bottom: -4px;
   background-color: var(--text-color);
-  animation: underlineAnimation 0.7s ease;
+  transform-origin: left center;
+  pointer-events: none;
 }
 
 .HomeContainer .hero .cta button {
@@ -83,113 +97,73 @@
   background-color: var(--muted-text);
 }
 
-.hero .names span {
-  position: relative;
-  color: var(--text-color);
-}
-
-.hero .names span::after {
-  content: "";
-  position: absolute;
-  height: 6px;
-  width: 100%;
-  transform: scaleX(0);
-  transform-origin: top right;
-  left: 0;
-  bottom: -4px;
-  background-color: var(--text-color);
-  transition: transform 1s ease;
-}
-
-.hero.backendMode .names span.django::after {
-  transform-origin: top left;
-  transform: scaleX(1);
-}
-.hero.frontendMode .names span.react::after {
-  transform-origin: top left;
-  transform: scaleX(1);
-}
-
+/* WHITE ARC CONTAINER */
 .iconCircle {
-  margin-top: 1.5em;
   background-color: var(--text-color);
   height: 10em;
   width: 100vw;
   border-top-left-radius: 50% 100%;
   border-top-right-radius: 50% 100%;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   overflow: hidden;
   position: fixed;
   bottom: 0;
   z-index: 1;
 }
 
+/* ROTATOR WRAPPER (ANCHORED TO LOWER SCREEN BASELINE) */
 .frameworkIconsContainer {
-  transform: translateY(37%);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* ROTATING RECTANGLE DIV */
 .frameworkIcons {
-  height: 5em;
-  width: 1em;
+  height: 18em;                 /* Increased height to space out the larger icons */
+  width: 6em;                   /* Increased width for 6em icons */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1em;
-  animation: rotate calc((var(--animation-time) + 6s) * 1.9) ease infinite;
+  align-items: center;
   transform-origin: center center;
+  margin-bottom: -9em;          /* Centers exactly on the bottom screen boundary (Radius = 9em) */
+                                /* Since 9em < 10em (arc height), the big icons will not overflow! */
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0);
-  }
-  45% {
-    transform: rotate(1deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  55% {
-    transform: rotate(180deg);
-  }
-  95% {
-    transform: rotate(181deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.iconCircle .icons {
-  font-size: 6em;
-}
-
+/* RESTORED TO LARGE ORIGINAL 6em SIZE */
 .django {
   color: var(--django-primary);
-  transform: translateX(5px) rotate(180deg);
+  font-size: 6em;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
 }
+
 .react {
   color: var(--ts-primary);
+  font-size: 6em;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes underlineAnimation {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
+/* BACKGROUND WATERMARK ICONS */
 .backgroundIconsContainer {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
+  pointer-events: none;
 }
 
 .frontendIcons,
@@ -207,75 +181,7 @@
   transform-origin: center center;
   font-size: clamp(100px, 140px, 150px);
   color: var(--bg-icons);
-}
-
-:root {
-  --cycle: 12s;
-}
-
-@keyframes slideUpHoldDrop {
-  0% {
-    top: 120%;
-    opacity: 0;
-  }
-  8.33% {
-    top: 0;
-    opacity: 1;
-  }
-  41.67% {
-    top: 0;
-    opacity: 1;
-  }
-  50% {
-    top: 120%;
-    opacity: 0;
-  }
-  100% {
-    top: 120%;
-    opacity: 0;
-  }
-}
-
-.frontendIcons span {
-  animation: slideUpHoldDrop var(--cycle) ease infinite;
-}
-
-.frontendIcons span:nth-child(1) {
-  transform: rotate(20deg);
-  animation-delay: 0.2s;
-}
-.frontendIcons span:nth-child(2) {
-  transform: rotate(-20deg);
-  animation-delay: 0.1s;
-}
-.frontendIcons span:nth-child(3) {
-  transform: rotate(20deg);
-  animation-delay: 0.4s;
-}
-.frontendIcons span:nth-child(1) {
-  transform: rotate(20deg);
-}
-
-.backendIcons span:nth-child(1) {
-  transform: rotate(20deg);
-  animation-delay: 6.2s;
-}
-.backendIcons span:nth-child(2) {
-  transform: rotate(-20deg);
-  animation-delay: 6.1s;
-}
-.backendIcons span:nth-child(3) {
-  transform: rotate(20deg);
-  animation-delay: 6.4s;
-}
-.backendIcons span:nth-child(4) {
-  transform: rotate(20deg);
-  animation-delay: 6s;
-}
-
-.backendIcons span {
-  top: 150%;
-  animation: slideUpHoldDrop var(--cycle) ease infinite;
+  /* Opacity is now handled entirely by GSAP up to 0.4 */
 }
 
 @media (max-width: 1000px) {
@@ -290,6 +196,7 @@
     font-size: 100px;
   }
 }
+
 @media (max-width: 500px) {
   .HomeContainer .hero h1 {
     font-size: 2em;
@@ -300,5 +207,14 @@
   }
   .backgroundIconsContainer span {
     font-size: 70px;
+  }
+  
+  /* Scale down the rotator on small screens to prevent overlap */
+  .frameworkIcons {
+    height: 14em;
+    margin-bottom: -7em;
+  }
+  .react, .django {
+    font-size: 4em;
   }
 }
