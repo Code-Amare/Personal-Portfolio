@@ -1,5 +1,3 @@
-/* Projects.module.css (centered, single-column, cards take full width of container) */
-
 .ProjectsContainer {
   display: flex;
   align-items: center;
@@ -8,89 +6,135 @@
   width: 100%;
   position: relative;
   text-align: center;
-  padding: 4rem 0 0 0;
-  background-color: rgb(34, 34, 34);
-  color: white;
+  padding: 3rem 0;
+  background: var(--bg);
+  color: var(--text-color);
+  font-family: var(--font-body);
   overflow-x: hidden;
 }
 
-.content {
-  width: 100%;
-  max-width: 1200px; /* the container width; adjust to taste */
-  padding: 0 1.25rem;
-  margin: 0 auto;
-  position: relative;
-  z-index: 10;
+.header {
+  margin-top: 6em;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.header {
-  margin-top: 3.5em;
+.terminalBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  padding: 0.5em 0.9em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-width: 260px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.dot:nth-child(1) { background: #ff5f56; }
+.dot:nth-child(2) { background: #ffbd2e; }
+.dot:nth-child(3) { background: #27c93f; }
+
+.terminalPath {
+  margin-left: 0.4em;
+}
+
+.prompt {
+  font-family: var(--font-mono);
+  color: var(--accent-2);
+  font-size: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: none;
+  width: 100%;
+  min-width: 260px;
+  box-sizing: border-box;
+  padding: 0.4em 0.9em;
+  margin: 0;
+  text-align: left;
 }
 
 .pageTitle {
-  font-size: 4.5rem;
-  font-family: "merriweather", serif;
-  margin: 0;
+  font-size: clamp(2.75em, 8vw, 6em);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  margin-top: 0.5em;
+  letter-spacing: -0.02em;
+}
+
+.content {
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
 }
 
 .mainContent {
   display: flex;
-  gap: 2rem;
   flex-direction: column;
-  padding: 2rem 0;
-  align-items: center;
+  gap: 2.5em;
+  width: min(92vw, 1000px);
+  padding: 0 1.8em;
+  box-sizing: border-box;
+  margin-top: 1.5em;
+}
+
+.introBlock {
   width: 100%;
+  max-width: 700px;
+  text-align: left;
+}
+
+.commentMark {
+  display: block;
+  font-family: var(--font-mono);
+  color: var(--accent-2);
+  opacity: 0.6;
+  font-size: 0.9rem;
 }
 
 .intro {
-  width: min(900px, 90%);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin: 0 auto 0.5rem auto;
-  text-align: center;
+  font-size: clamp(1em, 2vw, 1.1em);
+  line-height: 1.7;
+  color: var(--text-color);
+  padding-left: 1em;
+  border-left: 2px solid var(--border);
+  margin: 0.4em 0;
 }
 
-.sectionTitle {
-  margin: 0.5em;
-  font-size: 1.6em;
-  text-align: center;
-}
-
-/* projectsGrid: single column, center-aligned cards that take full container width */
-.projectsGrid {
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: 1.1em;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
+  gap: 0.5em;
   align-items: center;
+  align-self: flex-start;
 }
 
-/* ensure each child (card) stretches to container width */
-.projectsGrid > * {
+.bracket {
+  color: var(--accent);
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5em;
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
-/* when very wide screens, you can optionally limit card width using card CSS max-width */
-@media (max-width: 900px) {
-  .pageTitle {
-    font-size: 3.2rem;
-  }
-  .intro {
-    width: 95%;
-  }
-}
-
-@media (max-width: 500px) {
-  .pageTitle {
-    font-size: 2.6rem;
-    margin-top: 0.6em;
-  }
-  .intro {
-    font-size: 1rem;
-  }
+@media (max-width: 700px) {
+  .header { margin-top: 4em; }
 }

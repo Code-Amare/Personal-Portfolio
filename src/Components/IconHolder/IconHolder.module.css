@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 0.4em;
-  font-size: 25px;
+  font-size: clamp(18px, 4vw, 25px);
   padding: 0.1em 0.5em;
   border: 1px solid var(--bg-icons);
   border-radius: 0.2em;
@@ -11,27 +11,32 @@
   overflow: hidden;
   transition: transform var(--transition-fast) ease;
   text-decoration: none;
-  min-width: 64px; /* ensures tappable size */
+  min-width: 64px;
+  max-width: 100%;
+  box-sizing: border-box;
   flex: 0 0 auto;
   color: var(--text-color);
   margin: 0.3em 0;
 }
 
-span {
+.icon {
   transform: translateY(0.1em);
+  display: inline-flex;
 }
 
-span.span {
-  transform: 0;
+.icon.text {
+  transform: translateY(0);
 }
 
 .label {
   font-size: 0.8em;
+  white-space: nowrap;
 }
 
 .IconHolderContainer:hover {
   transform: skew(2deg) rotateY(-10deg);
 }
+
 .IconHolderContainer::after {
   content: "";
   position: absolute;
@@ -48,4 +53,11 @@ span.span {
 
 .IconHolderContainer:hover::after {
   left: -70%;
+}
+
+@media (max-width: 500px) {
+  .IconHolderContainer {
+    min-width: 56px;
+    padding: 0.15em 0.4em;
+  }
 }

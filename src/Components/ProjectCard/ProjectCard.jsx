@@ -1,36 +1,85 @@
 import styles from "./ProjectCard.module.css";
-import { Link } from "react-router-dom";
-import IconHolder from "../IconHolder/IconHolder";
+import { FiExternalLink } from "react-icons/fi";
 
-export default function ProjectCard({ image, title, description, techStack = [], gitLink }) {
-    return (
-        <div className={styles.card}>
-            <img src={image} alt={title} className={styles.image} />
+const ProjectCard = ({
+  image,
+  title,
+  description,
+  techStack,
+  gitLink,
+  liveLink,
+}) => {
+  const slug = title.toLowerCase().replace(/\s+/g, "-");
 
-            <div className={styles.content}>
-                <h3 className={styles.title}>{title}</h3>
-                <p className={styles.description}>{description}</p>
+  return (
+    <div className={styles.ProjectCard}>
+      <div className={styles.tab}>
+        <span className={styles.dot} />
+        <span className={styles.dot} />
+        <span className={styles.dot} />
+        <span className={styles.tabName}>{slug}.log</span>
+      </div>
 
-                <div className={styles.techRow}>
-                    <div className={styles.before}></div>
-                    {techStack.map((item, idx) => (
-                        <IconHolder
-                            key={idx}
-                            icon={item.icon}
-                            iconLabel={item.iconLabel}
-                            link={item.link}
-                        />
-                    ))}
-                    <div className={styles.after}></div>
-                </div>
+      <div className={styles.imageWrap}>
+        <img src={image} alt={title} className={styles.image} />
+      </div>
 
-                {gitLink && (
-                    <a href={gitLink} target="_blank" rel="noopener noreferrer" className={styles.button}>
-                        View Project
-                    </a>
+      <div className={styles.body}>
+        <h3 className={styles.title}>{title}</h3>
 
-                )}
-            </div>
+        <div className={styles.line}>
+          <span className={styles.comment}>//</span>
+          <p className={styles.description}>{description}</p>
         </div>
-    );
-}
+
+        <div className={styles.stackLine}>
+          <span className={styles.yamlKey}>stack:</span>
+          <div className={styles.stackTags}>
+            {techStack.map((tech) => (
+              <a
+                key={tech.iconLabel}
+                href={tech.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.tag}
+              >
+                {tech.icon}
+                <span>{tech.iconLabel}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {(gitLink || liveLink) && (
+          <div className={styles.linkRow}>
+            {gitLink && (
+              <a
+                href={gitLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.cloneLine}
+              >
+                <span className={styles.prompt}>$</span> git clone{" "}
+                {gitLink.replace("https://", "")}
+              </a>
+            )}
+
+            {liveLink && (
+              <a
+                href={liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.liveLine}
+              >
+                <FiExternalLink />
+                {liveLink.replace(/^https?:\/\//, "")}
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProjectCard;

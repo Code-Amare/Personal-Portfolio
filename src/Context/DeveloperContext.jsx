@@ -19,11 +19,13 @@ import { TbPlugConnected } from "react-icons/tb";
 export const developerData = {
   name: "Amare Misgana",
   age: 18,
-  email: "codeamare@gmail.com",
+  email: "amisgana809@gmail.com",
   educationLevel: "High School",
   city: "Shashemene",
   country: "Ethiopia",
   school: "Comboni Senior Secondary School",
+  fiverr_link: "https://www.fiverr.com/amare_dev/",
+  github_link: "https://github.com/Code-Amare",
 
   languages: [
     { name: "JavaScript", icon: <SiJavascript /> },

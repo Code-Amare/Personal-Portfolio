@@ -27,6 +27,30 @@
   z-index: 1;
 }
 
+.terminalTag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.75;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  padding: 0.3em 0.8em;
+  letter-spacing: 0.03em;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+}
+
 .HomeContainer .hero h1 {
   text-align: center;
   color: var(--text-color);
@@ -72,29 +96,55 @@
   pointer-events: none;
 }
 
-.HomeContainer .hero .cta button {
-  margin-top: 1em;
-  background-color: var(--text-color);
-  border: none;
-  padding: 0.5em 1em;
-  font-size: 1.3em;
-  font-weight: 400;
-  font-family: "merriweather", serif;
-  border-radius: 0.2em;
-  transition: color var(--transition-slow) ease;
+.modeLine {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  letter-spacing: 0.02em;
 }
 
-.hero.frontendMode .cta button {
+.modeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-color);
+}
+
+.HomeContainer .hero .cta button {
+  margin-top: 1em;
+  background-color: transparent;
+  border: 1.5px solid var(--text-color);
+  padding: 0.55em 1.2em;
+  font-size: 1.05em;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  color: var(--text-color);
+  border-radius: 0.3em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background-color var(--transition-slow) ease, color var(--transition-slow) ease;
+}
+
+.ctaPrompt {
+  opacity: 0.7;
+}
+
+.hero.frontendMode .cta button:hover {
   color: var(--ts-primary);
 }
 
-.hero.backendMode .cta button {
+.hero.backendMode .cta button:hover {
   color: var(--django-primary);
 }
 
 .hero .cta button:hover {
   cursor: pointer;
-  background-color: var(--muted-text);
+  background-color: var(--text-color);
 }
 
 /* WHITE ARC CONTAINER */
@@ -113,7 +163,6 @@
   z-index: 1;
 }
 
-/* ROTATOR WRAPPER (ANCHORED TO LOWER SCREEN BASELINE) */
 .frameworkIconsContainer {
   position: absolute;
   bottom: 0;
@@ -124,20 +173,17 @@
   align-items: center;
 }
 
-/* ROTATING RECTANGLE DIV */
 .frameworkIcons {
-  height: 18em;                 /* Increased height to space out the larger icons */
-  width: 6em;                   /* Increased width for 6em icons */
+  height: 18em;
+  width: 6em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   transform-origin: center center;
-  margin-bottom: -9em;          /* Centers exactly on the bottom screen boundary (Radius = 9em) */
-                                /* Since 9em < 10em (arc height), the big icons will not overflow! */
+  margin-bottom: -9em;
 }
 
-/* RESTORED TO LARGE ORIGINAL 6em SIZE */
 .django {
   color: var(--django-primary);
   font-size: 6em;
@@ -157,7 +203,6 @@
   align-items: center;
 }
 
-/* BACKGROUND WATERMARK ICONS */
 .backgroundIconsContainer {
   position: fixed;
   inset: 0;
@@ -180,41 +225,20 @@
   display: inline-block;
   transform-origin: center center;
   font-size: clamp(100px, 140px, 150px);
-  color: var(--bg-icons);
-  /* Opacity is now handled entirely by GSAP up to 0.4 */
+  color: var(--bg-home-icons);
 }
 
 @media (max-width: 1000px) {
-  .HomeContainer .hero h1 {
-    font-size: 3em;
-  }
-  .HomeContainer .hero h2 {
-    font-size: 1.4em;
-    font-weight: 200;
-  }
-  .backgroundIconsContainer span {
-    font-size: 100px;
-  }
+  .HomeContainer .hero h1 { font-size: 3em; }
+  .HomeContainer .hero h2 { font-size: 1.4em; font-weight: 200; }
+  .backgroundIconsContainer span { font-size: 100px; }
 }
 
 @media (max-width: 500px) {
-  .HomeContainer .hero h1 {
-    font-size: 2em;
-  }
-  .HomeContainer .hero h2 {
-    font-size: 1.1em;
-    font-weight: 200;
-  }
-  .backgroundIconsContainer span {
-    font-size: 70px;
-  }
-  
-  /* Scale down the rotator on small screens to prevent overlap */
-  .frameworkIcons {
-    height: 14em;
-    margin-bottom: -7em;
-  }
-  .react, .django {
-    font-size: 4em;
-  }
+  .HomeContainer .hero h1 { font-size: 2em; }
+  .HomeContainer .hero h2 { font-size: 1.1em; font-weight: 200; }
+  .backgroundIconsContainer span { font-size: 70px; }
+  .terminalTag { font-size: 0.7rem; }
+  .frameworkIcons { height: 14em; margin-bottom: -7em; }
+  .react, .django { font-size: 4em; }
 }

@@ -3,18 +3,10 @@ import Nav from "../../Components/Nav/Nav";
 import SplitText from "../../Components/SplitText/SplitText";
 import Footer from "../../Components/Footer/Footer";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
-import { useState, useEffect } from "react";
-import { useProjects } from "../../Context/ProjectContext"
+import { useProjects } from "../../Context/ProjectContext"; // match your actual filename
 
 const Projects = () => {
-  const [width, setWidth] = useState(window.innerWidth);
   const projects = useProjects();
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div className={styles.ProjectsContainer}>
@@ -22,6 +14,15 @@ const Projects = () => {
         <Nav currentPage="projects" />
 
         <div className={styles.header}>
+          <div className={styles.terminalBar}>
+            <span className={styles.dot} />
+            <span className={styles.dot} />
+            <span className={styles.dot} />
+            <span className={styles.terminalPath}>
+              amare@portfolio:~/projects
+            </span>
+          </div>
+          <p className={styles.prompt}>$ ls ./projects</p>
           <SplitText
             text="Projects"
             splitType="chars"
@@ -33,14 +34,25 @@ const Projects = () => {
         </div>
 
         <main className={styles.mainContent}>
-          <p className={styles.intro}>
-            Here are some of my featured projects — each one carefully built with strong architecture, modern UI, and enterprise-level security. I focus on performance, scalability, and crafting clean, maintainable code.
-          </p>
+          <div className={styles.introBlock}>
+            <span className={styles.commentMark}>/**</span>
+            <p className={styles.intro}>
+              Here are some of my featured projects — each one carefully built
+              with strong architecture, modern UI, and enterprise-level
+              security. I focus on performance, scalability, and crafting clean,
+              maintainable code.
+            </p>
+            <span className={styles.commentMark}>*/</span>
+          </div>
 
-          <h2 className={styles.sectionTitle}>Featured Work</h2>
+          <div className={styles.sectionLabel}>
+            <span className={styles.bracket}>&lt;</span>
+            Featured Work
+            <span className={styles.bracket}>/&gt;</span>
+          </div>
 
           <div className={styles.projectsGrid}>
-            {projects.map(project => (
+            {projects.map((project) => (
               <ProjectCard
                 key={project.id}
                 image={project.image}
@@ -48,13 +60,14 @@ const Projects = () => {
                 description={project.description}
                 techStack={project.techStack}
                 gitLink={project.gitLink}
+                liveLink={project.liveLink}
               />
             ))}
           </div>
         </main>
-      </div>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

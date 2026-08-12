@@ -18,16 +18,27 @@ const Home = () => {
   const reactUnderlineRef = useRef(null);
   const djangoUnderlineRef = useRef(null);
 
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   useGSAP(
     () => {
+      if (prefersReducedMotion) {
+        gsap.set(".bg-icon", { x: 0, y: 0, scale: 1, opacity: 0.3 });
+        gsap.set(reactUnderlineRef.current, {
+          scaleX: 1,
+          transformOrigin: "left center",
+        });
+        gsap.set(djangoUnderlineRef.current, { scaleX: 0 });
+        return;
+      }
+
       const tl = gsap.timeline({ repeat: -1 });
 
       // --- TWEAK THIS VARIABLE ---
-      // Changes when the rotation starts relative to the fly-out ending.
-      // Examples: "-=0.5" (starts 0.5s early), "+=0.2" (delays by 0.2s), "<" (starts simultaneously)
-      const rotationStartOffset = "-=0.5";
+      const rotationStartOffset = "-=0.3";
 
-      // Initial setup: Place icons slightly offset for the "pop/bounce" entrance
       gsap.set(".bg-icon", { x: 0, y: 40, scale: 0.8, opacity: 0 });
       gsap.set(reactUnderlineRef.current, {
         scaleX: 1,
@@ -43,7 +54,6 @@ const Home = () => {
       });
 
       // --- PHASE 1: FRONTEND ---
-      // 1. Pop/Bounce Entrance
       tl.to(".frontend-icon", {
         y: 0,
         scale: 1,
@@ -52,38 +62,28 @@ const Home = () => {
         stagger: 0.15,
         ease: "elastic.out(1, 0.4)",
       })
-        // 2. Hover in place (short random distances, varied directions)
         .to(".frontend-icon", {
-          y: "random(-8, 8)", // Short distance up or down
-          x: "random(-8, 8)", // Short distance left or right
+          y: "random(-8, 8)",
+          x: "random(-8, 8)",
           duration: 1.5,
-          yoyo: true, // Float back
+          yoyo: true,
           repeat: 1,
           ease: "sine.inOut",
-          stagger: {
-            each: 0.1,
-            from: "random", // Start randomly so they don't move together
-          },
+          stagger: { each: 0.1, from: "random" },
         })
-        // 3. Fly out animation
         .to(".frontend-icon", {
-          y: "-150vh", // Fly out of the screen
+          y: "-150vh",
           opacity: 0,
           duration: 0.9,
           stagger: 0.08,
           ease: "power3.in",
         })
-
-        // --- TRANSITION TO BACKEND ---
-        // Start rotation first (using the tweakable offset variable)
         .to(
           rotatorRef.current,
           { rotation: 180, duration: 2.1, ease: "expo.inOut" },
           rotationStartOffset,
         )
-        // Set a label exactly 1 second after rotation starts
         .add("colorChangeToBackend", "<1")
-        // Trigger the background change and underlines at that exact label
         .add(() => setIsFrontend(false), "colorChangeToBackend")
         .to(
           reactUnderlineRef.current,
@@ -105,9 +105,7 @@ const Home = () => {
           },
           "colorChangeToBackend+=0.2",
         )
-
         // --- PHASE 2: BACKEND ---
-        // 1. Pop/Bounce Entrance
         .to(
           ".backend-icon",
           {
@@ -120,38 +118,28 @@ const Home = () => {
           },
           "<0.4",
         )
-        // 2. Hover in place (short random distances, varied directions)
         .to(".backend-icon", {
-          y: "random(-8, 8)", // Short distance up or down
-          x: "random(-8, 8)", // Short distance left or right
+          y: "random(-8, 8)",
+          x: "random(-8, 8)",
           duration: 1.5,
-          yoyo: true, // Float back
+          yoyo: true,
           repeat: 1,
           ease: "sine.inOut",
-          stagger: {
-            each: 0.1,
-            from: "random", // Start randomly so they don't move together
-          },
+          stagger: { each: 0.1, from: "random" },
         })
-        // 3. Fly out animation
         .to(".backend-icon", {
-          y: "-150vh", // Fly out of the screen
+          y: "-150vh",
           opacity: 0,
           duration: 0.9,
           stagger: 0.08,
           ease: "power3.in",
         })
-
-        // --- TRANSITION TO FRONTEND ---
-        // Start rotation first (using the tweakable offset variable)
         .to(
           rotatorRef.current,
           { rotation: 360, duration: 1.2, ease: "expo.inOut" },
           rotationStartOffset,
         )
-        // Set a label exactly 1 second after rotation starts
         .add("colorChangeToFrontend", "<1")
-        // Trigger the background change and underlines at that exact label
         .add(() => setIsFrontend(true), "colorChangeToFrontend")
         .to(
           djangoUnderlineRef.current,
@@ -173,8 +161,6 @@ const Home = () => {
           },
           "colorChangeToFrontend+=0.2",
         )
-
-        // Reset positions seamlessly for the loop to start over
         .set(".frontend-icon", { x: 0, y: 40, scale: 0.8 })
         .set(".backend-icon", { x: 0, y: 40, scale: 0.8 });
     },
@@ -191,6 +177,10 @@ const Home = () => {
       <div
         className={`${styles.hero} ${isFrontend ? styles.frontendMode : styles.backendMode}`}
       >
+        <div className={styles.terminalTag}>
+          ~/home <span className={styles.cursor}>▍</span>
+        </div>
+
         <h1>
           Hi, I'm <span>Amare Misgana</span>
         </h1>
@@ -208,8 +198,16 @@ const Home = () => {
             </span>
           </span>
         </h2>
+
+        <div className={styles.modeLine}>
+          <span className={styles.modeDot} />
+          mode: {isFrontend ? "frontend" : "backend"}
+        </div>
+
         <div className={styles.cta}>
-          <button onClick={() => navigate("/projects")}>View Projects</button>
+          <button onClick={() => navigate("/projects")}>
+            <span className={styles.ctaPrompt}>&gt;</span> View Projects
+          </button>
         </div>
       </div>
 
@@ -226,25 +224,11 @@ const Home = () => {
       {/* BACKGROUND WATERMARK ICONS */}
       <div className={styles.backgroundIconsContainer}>
         <div className={`${styles.frontendIcons} ${styles.icons}`}>
-          {developer.frontend_icons?.map((icon, index) => {
-            let displayIcon = icon;
-
-            // Check and replace HTML and CSS text dynamically
-            if (typeof icon === "string") {
-              const lowerIcon = icon.toLowerCase();
-              if (lowerIcon === "css" || lowerIcon === "css3") {
-                displayIcon = "Tailwind CSS";
-              } else if (lowerIcon === "html" || lowerIcon === "html5") {
-                displayIcon = "JavaScript";
-              }
-            }
-
-            return (
-              <span key={index} className="bg-icon frontend-icon">
-                {displayIcon}
-              </span>
-            );
-          })}
+          {developer.frontend_icons?.map((icon, index) => (
+            <span key={index} className="bg-icon frontend-icon">
+              {icon}
+            </span>
+          ))}
         </div>
         <div className={`${styles.backendIcons} ${styles.icons}`}>
           {developer.backend_icons?.map((icon, index) => (

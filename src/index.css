@@ -12,7 +12,7 @@
   --surface-color: #1e1e1e;
   --text-color: #e0e0e0;
   --muted-text: #cecece;
-  --bg-icons: rgba(177, 177, 177, 0.651);
+  --bg-home-icons: rgba(177, 177, 177, 0.651);
 
   /* Text Colors */
   --text-high: #ffffff;
@@ -68,6 +68,20 @@
 
   /* Overlay */
   --overlay-bg: rgba(0, 0, 0, 0.6);
+    --bg-icons: #2e333d;
+  --blured-bg-color: rgba(255, 255, 255, 0.03);
+  --text-color: #ece9e4;
+  --text-muted: #8d93a1;
+  --transition-fast: 0.25s;
+
+  --bg: #14161b;
+  --surface: #1b1e25;
+  --border: #2a2e37;
+  --accent: #ffb454;   /* terminal amber */
+  --accent-2: #5ec8d8;  /* cool cyan, secondary */
+
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 body {
