@@ -8,6 +8,7 @@ import {
 } from "react-icons/si";
 import CsssTemplate from "../assets/templates/csss.png";
 import BlogNetTemplate from "../assets/templates/blognet.png";
+import ITClubPortal from "../assets/templates/it-club-portal.png";
 
 const ProjectsContext = createContext([]);
 
@@ -59,7 +60,7 @@ export const ProjectsProvider = ({ children }) => {
       title: "CSSS IT Club Portal",
       description:
         "A portal made for CSSS IT Club member to enhance learning experiance with Learning Tasks and Community feedback system.",
-      image: CsssTemplate,
+      image: ITClubPortal,
       techStack: [
         { icon: <SiReact />, iconLabel: "React", link: "https://react.dev" },
         {
