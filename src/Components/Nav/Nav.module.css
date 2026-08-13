@@ -20,6 +20,7 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
+
 .logo {
   height: 3em;
   cursor: pointer;
@@ -43,12 +44,12 @@
   color: var(--text-muted);
   position: relative;
   padding-bottom: 0.3em;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .pathPrefix {
-  color: var(--text-muted);
-  opacity: 0.5;
+  color: inherit;
+  opacity: 0.6;
 }
 
 .NavContainer ul li:hover {
@@ -101,6 +102,40 @@
   50% { opacity: 0; }
 }
 
+/* --- HOME PAGE ONLY: bright white links, bright yellow active state --- */
+.NavContainer:not(.notHome) ul li {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.NavContainer:not(.notHome) ul li:hover {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.NavContainer:not(.notHome) ul li::after {
+  background: #ffffff;
+}
+
+.NavContainer:not(.notHome) .currentPage {
+  color: #ffe600 !important;
+  opacity: 1;
+}
+
+.NavContainer:not(.notHome) .currentPage .pathPrefix {
+  color: #ffe600;
+  opacity: 0.8;
+}
+
+.NavContainer:not(.notHome) .currentPage::after {
+  background: #ffe600;
+}
+
+.NavContainer:not(.notHome) .currentPage::before {
+  color: #ffe600;
+}
+/* --- end home-only overrides --- */
+
 .closeButton,
 .menuButton {
   display: none;
@@ -145,6 +180,20 @@
     font-size: 1rem;
   }
 
+  /* the mobile drawer always has a solid --surface background, so keep
+     links legible there regardless of page — override the home-only white */
+  .NavContainer.sideBarOpen:not(.notHome) ul li {
+    color: var(--text-muted);
+  }
+
+  .NavContainer.sideBarOpen:not(.notHome) ul li:hover {
+    color: var(--text-color);
+  }
+
+  .NavContainer.sideBarOpen:not(.notHome) .currentPage {
+    color: var(--accent) !important;
+  }
+
   .closeButton {
     display: block;
     position: absolute;
@@ -173,36 +222,4 @@
     background: rgba(0, 0, 0, 0.6);
     pointer-events: auto;
   }
-}
-
-
-.NavContainer ul li {
-  display: flex;
-  align-items: center;
-  gap: 0.15em;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  position: relative;
-  padding-bottom: 0.3em;
-  transition: color 0.2s ease, opacity 0.2s ease;
-  opacity: 0.85;
-}
-
-.pathPrefix {
-  color: inherit;
-  opacity: 0.6;
-}
-
-.NavContainer ul li:hover {
-  opacity: 1;
-}
-
-.NavContainer.notHome ul li {
-  color: var(--text-muted);
-  opacity: 1;
-}
-
-.NavContainer.notHome ul li:hover {
-  color: var(--text-color);
 }

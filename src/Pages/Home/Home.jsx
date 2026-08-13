@@ -36,8 +36,18 @@ const Home = () => {
 
       const tl = gsap.timeline({ repeat: -1 });
 
-      // --- TWEAK THIS VARIABLE ---
+      // --- TWEAK THESE VARIABLES ---
       const rotationStartOffset = "-=0.3";
+      const forwardRotationDuration = 2.1; // frontend -> backend
+      const backwardRotationDuration = 1.2; // backend -> frontend
+      // Fraction of the rotation's own duration at which the bg/underline
+      // swap should fire. Tuned against the forward transition (felt right
+      // at "<1" out of 2.1s ≈ 0.48) — kept proportional so both directions
+      // stay in sync regardless of their differing durations.
+      const colorChangeAtRatio = 1 / forwardRotationDuration;
+
+      const forwardColorOffset = `<${(forwardRotationDuration * colorChangeAtRatio).toFixed(2)}`;
+      const backwardColorOffset = `<${(backwardRotationDuration * colorChangeAtRatio).toFixed(2)}`;
 
       gsap.set(".bg-icon", { x: 0, y: 40, scale: 0.8, opacity: 0 });
       gsap.set(reactUnderlineRef.current, {
@@ -80,10 +90,14 @@ const Home = () => {
         })
         .to(
           rotatorRef.current,
-          { rotation: 180, duration: 2.1, ease: "expo.inOut" },
+          {
+            rotation: 180,
+            duration: forwardRotationDuration,
+            ease: "expo.inOut",
+          },
           rotationStartOffset,
         )
-        .add("colorChangeToBackend", "<1")
+        .add("colorChangeToBackend", forwardColorOffset)
         .add(() => setIsFrontend(false), "colorChangeToBackend")
         .to(
           reactUnderlineRef.current,
@@ -136,10 +150,14 @@ const Home = () => {
         })
         .to(
           rotatorRef.current,
-          { rotation: 360, duration: 1.2, ease: "expo.inOut" },
+          {
+            rotation: 360,
+            duration: backwardRotationDuration,
+            ease: "expo.inOut",
+          },
           rotationStartOffset,
         )
-        .add("colorChangeToFrontend", "<1")
+        .add("colorChangeToFrontend", backwardColorOffset)
         .add(() => setIsFrontend(true), "colorChangeToFrontend")
         .to(
           djangoUnderlineRef.current,
