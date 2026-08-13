@@ -5,6 +5,7 @@ import Resume from "./Pages/Resume/Resume";
 import About from "./Pages/About/About";
 import { DeveloperContext, developerData } from "./Context/DeveloperContext";
 import { ProjectsProvider } from "./Context/ProjectContext";
+import ProjectDetail from "./Pages/ProjectDetail/ProjectDetail";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/about" element={<About />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
         </Routes>
       </DeveloperContext.Provider>
     </ProjectsProvider>
