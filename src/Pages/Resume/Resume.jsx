@@ -1,66 +1,20 @@
 import styles from "./Resume.module.css";
 import Nav from "../../Components/Nav/Nav";
 import Footer from "../../Components/Footer/Footer";
-import {
-  SiReact,
-  SiDjango,
-  SiPython,
-  SiHtml5,
-  SiCss3,
-  SiJavascript,
-  SiGithub,
-} from "react-icons/si";
 import { useContext } from "react";
 import { DeveloperContext } from "../../Context/DeveloperContext";
+import { useProjects } from "../../Context/ProjectContext";
+import { FiExternalLink, FiGithub } from "react-icons/fi";
 
 export default function Resume() {
-  const skills = [
-    { icon: <SiReact />, iconLabel: "React", link: "https://react.dev" },
-    {
-      icon: <SiDjango />,
-      iconLabel: "Django",
-      link: "https://www.djangoproject.com",
-    },
-    { icon: <SiPython />, iconLabel: "Python", link: "https://www.python.org" },
-    {
-      icon: <SiJavascript />,
-      iconLabel: "JavaScript",
-      link: "https://developer.mozilla.org",
-    },
-    {
-      icon: <SiHtml5 />,
-      iconLabel: "HTML5",
-      link: "https://developer.mozilla.org",
-    },
-    {
-      icon: <SiCss3 />,
-      iconLabel: "CSS3",
-      link: "https://developer.mozilla.org",
-    },
-    {
-      icon: <SiGithub />,
-      iconLabel: "GitHub",
-      link: "https://github.com/Amare-Misgana",
-    },
-  ];
-
-  const projects = [
-    {
-      name: "BlogNet",
-      description: "Full-stack blog (Django + React).",
-      link: "https://github.com/Amare-Misgana/BlogNet-Django-React",
-    },
-    {
-      name: "Comboni Fullstack Website",
-      description:
-        "School management system with multi-role dashboards and real-time features.",
-      link: "https://github.com/Amare-Misgana/comboni_fullstack_webiste",
-    },
-  ];
-
-  const education = ["Graduated (degree)", "Attended INSA Summer Camp Program"];
   const developer = useContext(DeveloperContext);
-  const email = developer.email;
+  const projects = useProjects();
+
+  const skills = [
+    ...developer.languages,
+    ...developer.frameworks,
+    ...developer.tools,
+  ];
 
   return (
     <div className={styles.container}>
@@ -74,12 +28,12 @@ export default function Resume() {
           <span className={styles.terminalPath}>amare@portfolio:~/resume</span>
         </div>
         <p className={styles.prompt}>$ cat resume.yaml</p>
-        <h1 className={styles.title}>Amare Misgana</h1>
+        <h1 className={styles.title}>{developer.name}</h1>
         <p className={styles.subtitle}>
           Full-Stack Developer — Django &amp; React
         </p>
         <a
-          href="https://www.fiverr.com/amare_dev/"
+          href={developer.fiverr_link}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.hireMe}
@@ -96,6 +50,16 @@ export default function Resume() {
           </div>
 
           <div className={styles.fileBody}>
+            {/* summary */}
+            <div className={`${styles.fileLine} ${styles.keyLine}`}>
+              <span className={styles.yamlKey}>summary:</span>
+            </div>
+            <div className={`${styles.fileLine} ${styles.itemLine}`}>
+              <span className={styles.fieldValue}>
+                {developer.resumeSummary}
+              </span>
+            </div>
+
             {/* contact */}
             <div className={`${styles.fileLine} ${styles.keyLine}`}>
               <span className={styles.yamlKey}>contact:</span>
@@ -103,13 +67,27 @@ export default function Resume() {
             <div className={`${styles.fileLine} ${styles.itemLine}`}>
               <span className={styles.yamlDash}>-</span>
               <span className={styles.fieldLabel}>location:</span>
-              <span className={styles.fieldValue}>Ethiopia / Oromia</span>
+              <span className={styles.fieldValue}>
+                {developer.city}, {developer.country}
+              </span>
             </div>
             <div className={`${styles.fileLine} ${styles.itemLine}`}>
               <span className={styles.yamlDash}>-</span>
               <span className={styles.fieldLabel}>email:</span>
-              <a href={`mailto:${email}`} className={styles.fieldLink}>
-                {email}
+              <a href={`mailto:${developer.email}`} className={styles.fieldLink}>
+                {developer.email}
+              </a>
+            </div>
+            <div className={`${styles.fileLine} ${styles.itemLine}`}>
+              <span className={styles.yamlDash}>-</span>
+              <span className={styles.fieldLabel}>github:</span>
+              <a
+                href={developer.github_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.fieldLink}
+              >
+                <FiGithub /> {developer.github_link.replace("https://", "")}
               </a>
             </div>
 
@@ -123,16 +101,10 @@ export default function Resume() {
               <span className={styles.yamlDash}>-</span>
               <div className={styles.skillTags}>
                 {skills.map((s) => (
-                  <a
-                    key={s.iconLabel}
-                    href={s.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.tag}
-                  >
+                  <span key={s.name} className={styles.tag}>
                     {s.icon}
-                    <span>{s.iconLabel}</span>
-                  </a>
+                    <span>{s.name}</span>
+                  </span>
                 ))}
               </div>
             </div>
@@ -143,23 +115,35 @@ export default function Resume() {
             </div>
             {projects.map((p) => (
               <div
-                key={p.name}
+                key={p.id}
                 className={`${styles.fileLine} ${styles.itemLine} ${styles.projectLine}`}
               >
                 <span className={styles.yamlDash}>-</span>
                 <div className={styles.projectDetail}>
                   <span className={styles.fieldValue}>
-                    <strong>{p.name}</strong> — {p.description}
+                    <strong>{p.title}</strong> — {p.description}
                   </span>
-                  <a
-                    href={p.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.cloneLine}
-                  >
-                    <span className={styles.promptChar}>$</span> git clone{" "}
-                    {p.link.replace("https://", "")}
-                  </a>
+                  {p.gitLink && (
+                    <a
+                      href={p.gitLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.cloneLine}
+                    >
+                      <span className={styles.promptChar}>$</span> git clone{" "}
+                      {p.gitLink.replace("https://", "")}
+                    </a>
+                  )}
+                  {p.liveLink && (
+                    <a
+                      href={p.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.liveLine}
+                    >
+                      <FiExternalLink /> {p.liveLink.replace(/^https?:\/\//, "")}
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
@@ -168,7 +152,7 @@ export default function Resume() {
             <div className={`${styles.fileLine} ${styles.keyLine}`}>
               <span className={styles.yamlKey}>education:</span>
             </div>
-            {education.map((e) => (
+            {developer.educationList.map((e) => (
               <div key={e} className={`${styles.fileLine} ${styles.itemLine}`}>
                 <span className={styles.yamlDash}>-</span>
                 <span className={styles.fieldValue}>{e}</span>

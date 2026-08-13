@@ -275,3 +275,18 @@
 .ctaPrompt {
   opacity: 0.8;
 }
+
+.liveLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.liveLine:hover {
+  color: var(--accent-2);
+}
