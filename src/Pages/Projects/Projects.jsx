@@ -37,7 +37,7 @@ const Projects = () => {
           <div className={styles.introBlock}>
             <span className={styles.commentMark}>/**</span>
             <p className={styles.intro}>
-              Here are some of my featured projects — each one carefully built
+              Here are some of my featured projects each one carefully built
               with strong architecture, modern UI, and enterprise-level
               security. I focus on performance, scalability, and crafting clean,
               maintainable code.
