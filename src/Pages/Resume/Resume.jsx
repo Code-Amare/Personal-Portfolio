@@ -5,10 +5,12 @@ import { useContext } from "react";
 import { DeveloperContext } from "../../Context/DeveloperContext";
 import { useProjects } from "../../Context/ProjectContext";
 import { FiExternalLink, FiGithub } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function Resume() {
   const developer = useContext(DeveloperContext);
   const projects = useProjects();
+  const navigate = useNavigate();
 
   const skills = [
     ...developer.languages,
@@ -30,7 +32,7 @@ export default function Resume() {
         <p className={styles.prompt}>$ cat resume.yaml</p>
         <h1 className={styles.title}>{developer.name}</h1>
         <p className={styles.subtitle}>
-          Full-Stack Developer — Django &amp; React
+          Full-Stack Developer /*Django &amp; React*/
         </p>
         <a
           href={developer.fiverr_link}
@@ -74,7 +76,10 @@ export default function Resume() {
             <div className={`${styles.fileLine} ${styles.itemLine}`}>
               <span className={styles.yamlDash}>-</span>
               <span className={styles.fieldLabel}>email:</span>
-              <a href={`mailto:${developer.email}`} className={styles.fieldLink}>
+              <a
+                href={`mailto:${developer.email}`}
+                className={styles.fieldLink}
+              >
                 {developer.email}
               </a>
             </div>
@@ -116,12 +121,15 @@ export default function Resume() {
             {projects.map((p) => (
               <div
                 key={p.id}
+                onClick={() => {
+                  navigate(`/projects/${p.id}`);
+                }}
                 className={`${styles.fileLine} ${styles.itemLine} ${styles.projectLine}`}
               >
                 <span className={styles.yamlDash}>-</span>
                 <div className={styles.projectDetail}>
                   <span className={styles.fieldValue}>
-                    <strong>{p.title}</strong> — {p.description}
+                    <strong className={styles.projectTitle}>{p.title}</strong>: {p.description}
                   </span>
                   {p.gitLink && (
                     <a
@@ -141,7 +149,8 @@ export default function Resume() {
                       rel="noopener noreferrer"
                       className={styles.liveLine}
                     >
-                      <FiExternalLink /> {p.liveLink.replace(/^https?:\/\//, "")}
+                      <FiExternalLink />{" "}
+                      {p.liveLink.replace(/^https?:\/\//, "")}
                     </a>
                   )}
                 </div>

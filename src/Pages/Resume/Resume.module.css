@@ -290,3 +290,8 @@
 .liveLine:hover {
   color: var(--accent-2);
 }
+
+.projectTitle:hover{
+  color: var(--accent);
+  cursor: pointer;
+}
