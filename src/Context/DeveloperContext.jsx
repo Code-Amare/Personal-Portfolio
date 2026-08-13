@@ -19,7 +19,7 @@ import { TbPlugConnected } from "react-icons/tb";
 export const developerData = {
   name: "Amare Misgana",
   age: 18,
-  email: "amisgana809@gmail.com",
+  email: "amaremisganacode@gmail.com",
   educationLevel: "High School",
   city: "Shashemene",
   country: "Ethiopia",
