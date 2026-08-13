@@ -289,3 +289,143 @@
 @media (max-width: 500px) {
   .fileLine::before { width: 1.6em; padding-right: 0.5em; }
 }
+
+.mainImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f1015;
+  padding: 0;
+  cursor: zoom-in;
+  display: block;
+}
+
+.expandHint {
+  position: absolute;
+  bottom: 0.8em;
+  right: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  background: rgba(20, 22, 27, 0.85);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.4em 0.7em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-color);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mainImageWrap:hover .expandHint {
+  opacity: 1;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10, 11, 14, 0.95);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightboxImage {
+  max-width: 88vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: default;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 1.2em;
+  right: 1.2em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-color);
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.lightboxClose:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lightboxCounter {
+  position: absolute;
+  top: 1.4em;
+  left: 1.4em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.4em 0.8em;
+  border-radius: 5px;
+}
+
+.lightboxNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-color);
+  width: 2.8em;
+  height: 2.8em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.lightboxNav:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lightboxPrev {
+  left: 1.5em;
+}
+
+.lightboxNext {
+  right: 1.5em;
+}
+
+@media (max-width: 600px) {
+  .lightboxNav {
+    width: 2.2em;
+    height: 2.2em;
+    font-size: 1.1rem;
+  }
+  .lightboxPrev { left: 0.6em; }
+  .lightboxNext { right: 0.6em; }
+  .expandHint { display: none; }
+}

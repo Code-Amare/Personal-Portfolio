@@ -1,16 +1,45 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./ProjectDetail.module.css";
 import Nav from "../../Components/Nav/Nav";
 import Footer from "../../Components/Footer/Footer";
 import { useProjects } from "../../Context/ProjectContext";
-import { FiExternalLink, FiArrowLeft } from "react-icons/fi";
+import { FiExternalLink, FiArrowLeft, FiX, FiChevronLeft, FiChevronRight, FiMaximize } from "react-icons/fi";
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const projects = useProjects();
   const project = projects.find((p) => String(p.id) === id);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const images = project?.images?.length ? project.images : project ? [project.image] : [];
+
+  const goNext = useCallback(() => {
+    setActiveIndex((i) => (i + 1) % images.length);
+  }, [images.length]);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((i) => (i - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+
+    const handleKey = (e) => {
+      if (e.key === "Escape") setIsFullscreen(false);
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+
+    window.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [isFullscreen, goNext, goPrev]);
 
   if (!project) {
     return (
@@ -28,7 +57,6 @@ const ProjectDetail = () => {
     );
   }
 
-  const images = project.images?.length ? project.images : [project.image];
   const slug = project.title.toLowerCase().replace(/\s+/g, "-");
 
   return (
@@ -54,13 +82,21 @@ const ProjectDetail = () => {
         </Link>
 
         <div className={styles.gallery}>
-          <div className={styles.mainImageWrap}>
+          <button
+            type="button"
+            className={styles.mainImageWrap}
+            onClick={() => setIsFullscreen(true)}
+            aria-label="View fullscreen"
+          >
             <img
               src={images[activeIndex]}
               alt={`${project.title} screenshot ${activeIndex + 1}`}
               className={styles.mainImage}
             />
-          </div>
+            <span className={styles.expandHint}>
+              <FiMaximize /> view fullscreen
+            </span>
+          </button>
 
           {images.length > 1 && (
             <div className={styles.thumbRow}>
@@ -164,6 +200,58 @@ const ProjectDetail = () => {
           </div>
         </div>
       </main>
+
+      {isFullscreen && (
+        <div className={styles.lightbox} onClick={() => setIsFullscreen(false)}>
+          <button
+            type="button"
+            className={styles.lightboxClose}
+            onClick={() => setIsFullscreen(false)}
+            aria-label="Close fullscreen"
+          >
+            <FiX />
+          </button>
+
+          <span className={styles.lightboxCounter}>
+            {activeIndex + 1} / {images.length}
+          </span>
+
+          {images.length > 1 && (
+            <button
+              type="button"
+              className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
+              aria-label="Previous image"
+            >
+              <FiChevronLeft />
+            </button>
+          )}
+
+          <img
+            src={images[activeIndex]}
+            alt={`${project.title} screenshot ${activeIndex + 1}`}
+            className={styles.lightboxImage}
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {images.length > 1 && (
+            <button
+              type="button"
+              className={`${styles.lightboxNav} ${styles.lightboxNext}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
+              aria-label="Next image"
+            >
+              <FiChevronRight />
+            </button>
+          )}
+        </div>
+      )}
 
       <Footer />
     </div>

@@ -12,7 +12,6 @@ import ITClubPortalTemplate from "../assets/templates/it-club-portal.png";
 import CityShopDashboard from "../assets/templates/cityshop/dashboard.png";
 
 import BlognetHomeGreen from "../assets/templates/blognet/home-green.png";
-import BlognetHomeRed from "../assets/templates/blognet/home-red.png";
 import BlognetLoginRed from "../assets/templates/blognet/login-red.png";
 
 import ITClubAdminDashboard from "../assets/templates/it-club-portal/admin-dashboard.png";
@@ -36,12 +35,7 @@ export const ProjectsProvider = ({ children }) => {
       description:
         "A full-stack blogging platform built with Django backend and React frontend, featuring user authentication and CRUD operations.",
       image: BlogNetTemplate,
-      images: [
-        BlogNetTemplate,
-        BlognetHomeGreen,
-        BlognetHomeRed,
-        BlognetLoginRed,
-      ],
+      images: [BlogNetTemplate, BlognetHomeGreen, BlognetLoginRed],
       techStack: [
         { icon: <SiReact />, iconLabel: "React", link: "https://react.dev" },
         {
