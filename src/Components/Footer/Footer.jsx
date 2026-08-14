@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
-import { TbBrandFiverr } from "react-icons/tb";
+import { TbBrandFiverr, TbBrandUpwork } from "react-icons/tb";
 import { useContext } from "react";
 import { DeveloperContext } from "../../Context/DeveloperContext";
 
@@ -58,6 +58,15 @@ function Footer() {
             aria-label="Fiverr"
           >
             <TbBrandFiverr />
+          </a>
+          <a
+            href={developer.upwork_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.tag}
+            aria-label="Fiverr"
+          >
+            <TbBrandUpwork />
           </a>
         </div>
       </div>

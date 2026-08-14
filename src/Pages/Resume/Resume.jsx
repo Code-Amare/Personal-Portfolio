@@ -42,6 +42,14 @@ export default function Resume() {
         >
           <span className={styles.ctaPrompt}>&gt;</span> Hire me - On Fiverr
         </a>
+        <a
+          href={developer.upwork_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.hireMe}
+        >
+          <span className={styles.ctaPrompt}>&gt;</span> Hire me - On Upwork
+        </a>
       </header>
 
       <main className={styles.mainContent}>
@@ -129,7 +137,8 @@ export default function Resume() {
                 <span className={styles.yamlDash}>-</span>
                 <div className={styles.projectDetail}>
                   <span className={styles.fieldValue}>
-                    <strong className={styles.projectTitle}>{p.title}</strong>: {p.description}
+                    <strong className={styles.projectTitle}>{p.title}</strong>:{" "}
+                    {p.description}
                   </span>
                   {p.gitLink && (
                     <a
